@@ -9,6 +9,9 @@ var serverIsReady = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	if "--server" in OS.get_cmdline_args():
+		_on_host_button_down()
+		print("Hosting on ", 8910)
 	multiplayer.peer_connected.connect(_on_peer_connected)
 	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
 
