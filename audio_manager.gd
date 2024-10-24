@@ -16,13 +16,15 @@ func setupAudio(id):
 	input = $Input
 	set_multiplayer_authority(id)
 	
-	# Set up the input stream
-	input.stream = AudioStreamMicrophone.new()
-	input.play()
+	if is_multiplayer_authority():
+		# Set up the input stream
+		input.stream = AudioStreamMicrophone.new()
+		input.play()
+		
+		index = AudioServer.get_bus_index("Record")
+		effect = AudioServer.get_bus_effect(index, 0)
 	
-	index = AudioServer.get_bus_index("Record")
-	effect = AudioServer.get_bus_effect(index, 0)
-
+	# remember to enable autoplay for the output
 	playback = get_node(outputPath).get_stream_playback()
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -50,9 +52,7 @@ func processMic():
 		if maxAmplitude < inputThreshold:
 			return
 		
-		print(data)
-		# sendData.rpc(data)
-		sendData(data)
+		sendData.rpc(data)
 
 func processVoice():
 	if receiveBuffer.size() <= 0:

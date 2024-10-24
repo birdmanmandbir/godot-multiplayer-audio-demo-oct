@@ -1,8 +1,33 @@
-[gd_scene load_steps=3 format=3 uid="uid://7akfw6m6i0ha"]
+[gd_scene load_steps=4 format=3 uid="uid://7akfw6m6i0ha"]
 
-[ext_resource type="Script" path="res://test_scene.gd" id="1_4ckvs"]
+[ext_resource type="Script" path="res://server.gd" id="1_6efvv"]
 [ext_resource type="PackedScene" uid="uid://bp0j10efojj0t" path="res://character.tscn" id="2_6eph5"]
+[ext_resource type="Script" path="res://client.gd" id="2_qce6g"]
 
-[node name="testScene" type="Node2D"]
-script = ExtResource("1_4ckvs")
-Character = ExtResource("2_6eph5")
+[node name="Node2D" type="Node2D"]
+position = Vector2(-2, 0)
+
+[node name="Server" type="Node" parent="."]
+script = ExtResource("1_6efvv")
+PlayerScene = ExtResource("2_6eph5")
+
+[node name="Host" type="Button" parent="Server"]
+offset_left = 679.0
+offset_top = 38.0
+offset_right = 888.0
+offset_bottom = 107.0
+text = "Host Server"
+
+[node name="Client" type="Node" parent="."]
+script = ExtResource("2_qce6g")
+PlayerScene = ExtResource("2_6eph5")
+
+[node name="ConnectToServer" type="Button" parent="Client"]
+offset_left = 60.0
+offset_top = 42.0
+offset_right = 259.0
+offset_bottom = 109.0
+text = "Connect To Server"
+
+[connection signal="button_down" from="Server/Host" to="Server" method="_on_host_button_down"]
+[connection signal="button_down" from="Client/ConnectToServer" to="Client" method="_on_connect_to_server_button_down"]

@@ -7,7 +7,6 @@ func _ready() -> void:
 	var s = Character.instantiate()
 	add_child(s)
 	s.setupAudio()
-	s.get_node("AudioManager").setupAudio(multiplayer.get_unique_id())
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
