@@ -17,6 +17,11 @@ func _ready() -> void:
 
 func _on_peer_connected(id: int) -> void:
 	print("Peer connected with id: ", id)
+	var p = PlayerScene.instantiate()
+	get_node(gameSpawnLocation).add_child(p)
+	p.name = str(id)
+
+	p.get_node("AudioManager").setupAudio(id)
 
 func _on_peer_disconnected(id: int) -> void:
 	print("Peer disconnected with id: ", id)
