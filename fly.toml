@@ -18,7 +18,6 @@ primary_region = 'ord'
 
   [[services.ports]]
     port = 8910
-    handlers = ["udp"]
 
 [[vm]]
   memory = '1gb'

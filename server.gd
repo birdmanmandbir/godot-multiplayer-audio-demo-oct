@@ -36,8 +36,9 @@ func _process(delta: float) -> void:
 	pass
 
 func _on_host_button_down():
+	peer.set_bind_ip("fly-global-services")
 	var error = peer.create_server(8910)
-	if error != OK:
+	if error:
 		print("Failed to create server: ", error)
 		return
 
