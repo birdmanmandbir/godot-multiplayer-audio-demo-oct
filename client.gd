@@ -29,8 +29,11 @@ func _process(delta: float) -> void:
 		peer.poll()
 
 func _on_connect_to_server_button_down() -> void:
-	# peer.create_client("127.0.0.1", 8910)
-	peer.create_client("spatial-audio-demo-2d.fly.dev", 8910)
+	# var error: int = peer.create_client("127.0.0.1", 8910)
+	var error: int = peer.create_client("spatial-audio-demo-2d.fly.dev", 8910)
+	if error:
+		print("Failed to create client: ", error)
+		return
 	multiplayer.multiplayer_peer = peer
 
 	# spawn player scene for this peer
@@ -40,4 +43,5 @@ func _on_connect_to_server_button_down() -> void:
 
 	p.get_node("AudioManager").setupAudio(multiplayer.get_unique_id())
 	clientReady = true
+	print("Client ready")
 	pass # Replace with function body.

@@ -18,7 +18,7 @@ primary_region = 'ord'
 
   [[services.ports]]
     port = 8910
-    handlers = []
+    # handlers = []
 
 [[vm]]
   memory = '1gb'
