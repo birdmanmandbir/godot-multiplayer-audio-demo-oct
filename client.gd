@@ -29,8 +29,9 @@ func _process(delta: float) -> void:
 		peer.poll()
 
 func _on_connect_to_server_button_down() -> void:
+	var error: int = peer.create_client("192.168.0.27", 8910)
 	#var error: int = peer.create_client("127.0.0.1", 8910)
-	var error: int = peer.create_client("spatial-audio-demo-2d.fly.dev", 8910)
+	# var error: int = peer.create_client("spatial-audio-demo-2d.fly.dev", 8910)
 	if error:
 		print("Failed to create client: ", error)
 		return

@@ -18,11 +18,6 @@ func _ready() -> void:
 func _on_peer_connected(id: int) -> void:
 	print("Server: Peer connected with id: ", id)
 	print("Server: Current peers: ", multiplayer.get_peers())
-	var p = PlayerScene.instantiate()
-	get_node(gameSpawnLocation).add_child(p)
-	p.name = str(id)
-
-	p.get_node("AudioManager").setupAudio(id)
 
 func _on_peer_disconnected(id: int) -> void:
 	print("Peer disconnected with id: ", id)
@@ -36,7 +31,7 @@ func _process(delta: float) -> void:
 	pass
 
 func _on_host_button_down():
-	peer.set_bind_ip("fly-global-services")
+	# peer.set_bind_ip("fly-global-services")
 	var error = peer.create_server(8910)
 	if error:
 		print("Failed to create server: ", error)
