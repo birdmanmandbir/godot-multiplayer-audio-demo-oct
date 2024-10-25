@@ -29,12 +29,8 @@ func setupAudio(id):
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	if is_multiplayer_authority() and multiplayer.get_peers().size() > 0:
+	if is_multiplayer_authority():
 		processMic()
-	elif !is_multiplayer_authority():
-		print("Not authority")
-	elif multiplayer.get_peers().size() == 0:
-		print("No peers")
 	processVoice()
 	pass
 

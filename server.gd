@@ -16,7 +16,8 @@ func _ready() -> void:
 	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
 
 func _on_peer_connected(id: int) -> void:
-	print("Peer connected with id: ", id)
+	print("Server: Peer connected with id: ", id)
+	print("Server: Current peers: ", multiplayer.get_peers())
 	var p = PlayerScene.instantiate()
 	get_node(gameSpawnLocation).add_child(p)
 	p.name = str(id)
