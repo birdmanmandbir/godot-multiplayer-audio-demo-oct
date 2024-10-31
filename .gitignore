@@ -1,6 +1,5 @@
 # Godot 4+ specific ignores
 .godot/
 /android/
-build/spatial-audio-demo-2d.apk
+build/*.apk
 .DS_store
-

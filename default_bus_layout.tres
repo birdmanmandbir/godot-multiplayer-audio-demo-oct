@@ -1,7 +1,7 @@
 [gd_resource type="AudioBusLayout" load_steps=2 format=3 uid="uid://b04tfjo78phhg"]
 
-[sub_resource type="AudioEffectCapture" id="AudioEffectCapture_mfhcn"]
-resource_name = "Capture"
+[sub_resource type="AudioEffectOpusChunked" id="AudioEffectOpusChunked_c3gv1"]
+resource_name = "OpusChunked"
 
 [resource]
 bus/1/name = &"Mute"
@@ -16,5 +16,5 @@ bus/2/mute = false
 bus/2/bypass_fx = false
 bus/2/volume_db = 0.0
 bus/2/send = &"Mute"
-bus/2/effect/0/effect = SubResource("AudioEffectCapture_mfhcn")
+bus/2/effect/0/effect = SubResource("AudioEffectOpusChunked_c3gv1")
 bus/2/effect/0/enabled = true

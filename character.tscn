@@ -2,8 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://plannpc5s08v" path="res://audio_manager.tscn" id="1_p2u60"]
 
-[sub_resource type="AudioStreamGenerator" id="AudioStreamGenerator_4djyt"]
-mix_rate = 48000.0
+[sub_resource type="AudioStreamOpusChunked" id="AudioStreamOpusChunked_kdlvn"]
 
 [node name="Character" type="Node2D"]
 
@@ -11,5 +10,5 @@ mix_rate = 48000.0
 outputPath = NodePath("../AudioStreamPlayer2D")
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
-stream = SubResource("AudioStreamGenerator_4djyt")
+stream = SubResource("AudioStreamOpusChunked_kdlvn")
 autoplay = true
