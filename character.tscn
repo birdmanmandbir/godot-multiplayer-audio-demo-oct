@@ -3,6 +3,9 @@
 [ext_resource type="PackedScene" uid="uid://plannpc5s08v" path="res://audio_manager.tscn" id="1_p2u60"]
 
 [sub_resource type="AudioStreamOpusChunked" id="AudioStreamOpusChunked_kdlvn"]
+audiosamplerate = 48000
+audiosamplesize = 960
+mix_rate = 48000
 
 [node name="Character" type="Node2D"]
 
