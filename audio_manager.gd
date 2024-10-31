@@ -1,17 +1,18 @@
 extends Node
 
 @onready var input: AudioStreamPlayer
-var index: int
-var effect: AudioEffectOpusChunked
+var mic_bus: int
+var mic_capture: AudioEffectOpusChunked
 @export var outputPath: NodePath
-var inputThreshold: float = 0.005
-var receiveBuffer := []
 
 var outputstreamopuschunked: AudioStreamOpusChunked
-var prefixbyteslength = 0
+
+var packets_received = 0
+var packets_sent = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	assert($Input.bus == "Record")
 	pass
 
 func setupAudio(id):
@@ -19,47 +20,31 @@ func setupAudio(id):
 	set_multiplayer_authority(id)
 	
 	if is_multiplayer_authority():
-		# Set up the input stream
-		input.stream = AudioStreamMicrophone.new()
-		input.play()
-		
-		index = AudioServer.get_bus_index("Record")
-		effect = AudioServer.get_bus_effect(index, 0)
+		mic_bus = AudioServer.get_bus_index("Record")
+		mic_capture = AudioServer.get_bus_effect(mic_bus, 0)
 	
 	# remember to enable autoplay for the output
 	outputstreamopuschunked = get_node(outputPath).get_stream()
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	if is_multiplayer_authority() and multiplayer.multiplayer_peer and multiplayer.multiplayer_peer.get_connection_status() != MultiplayerPeer.CONNECTION_CONNECTED:
+	if is_multiplayer_authority():
 		processMic()
-	processVoice()
-	pass
 
 func processMic():
-	var prepend = PackedByteArray()
-	while effect.chunk_available():
-		var opusdata: PackedByteArray = effect.read_opus_packet(prepend)
-		effect.drop_chunk()
-		var maxAmplitude := 0.0
-
-		for i in range(opusdata.size()):
-			# loud enough then send to server
-			maxAmplitude = max(maxAmplitude, opusdata[i])
-		
-		if maxAmplitude < inputThreshold:
-			continue
-		
-		sendData.rpc(opusdata)
-
-func processVoice():
-	if receiveBuffer.size() == 0:
-		return
-
-	while outputstreamopuschunked.chunk_space_available():
-		var fec = 0
-		outputstreamopuschunked.push_opus_packet(receiveBuffer, prefixbyteslength, fec)
+	while mic_capture.chunk_available():
+		var packet = mic_capture.read_opus_packet(PackedByteArray())
+		mic_capture.drop_chunk()
+		# TODO: add maxAmplitude filter?
+		if multiplayer.multiplayer_peer.get_connection_status() == MultiplayerPeer.CONNECTION_CONNECTED:
+			sendData.rpc(packet)
+			packets_sent += 1
+			if (packets_sent % 100) == 0:
+				print("Packets sent: ", packets_sent, " from id ", multiplayer.get_unique_id())
 
 @rpc("any_peer", "call_remote", "unreliable_ordered")
-func sendData(data: PackedByteArray):
-	receiveBuffer.append_array(data)
+func sendData(packet: PackedByteArray):
+	packets_received += 1
+	if (packets_received % 100) == 0:
+		print("Packets received: ", packets_received, " from id ", multiplayer.get_unique_id())
+	outputstreamopuschunked.push_opus_packet(packet, 0, 0)
